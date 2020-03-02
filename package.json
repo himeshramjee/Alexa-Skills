@@ -1,0 +1,26 @@
+{
+  "name": "alexa-skills",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "preinstall": "npm install nodemon",
+    "start": "nodemon ./bin/www"
+  },
+  "dependencies": {
+    "nodemon": "^2.0.2",
+    "express": "^4.17.1",
+    "morgan": "^1.9.1",
+    "dotenv": "^8.2.0",
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.4",
+    "dateformat": "^3.0.3",
+    "pug": "^2.0.4"
+  },
+  "devDependencies": {
+    "debug": "^2.6.9"
+  },
+  "nodemonConfig": {
+    "ext": "js, json, pug",
+    "delay": "2500"
+  }
+}
