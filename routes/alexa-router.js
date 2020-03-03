@@ -38,6 +38,15 @@ router.get('/list-wc-municipalities', function(req, res) {
     });
 });
 
+router.get('/list-provinces', function(req, res) {
+  var keys = Object.keys(EskomLoadSheddingAPI.Province);
+  
+  var provinces = [];
+  keys.filter(key => !isNaN(Number(key))).map(key => provinces.push({ name : key, id : EskomLoadSheddingAPI.Province[key] }));
+
+  res.status(200).send(provinces);
+});
+
 router.post('/eskom/load-shedding-status?town=xxx', function(req, res, next) {
   console.log(req.body);
   console.log("TODO: Make API call");
