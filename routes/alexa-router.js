@@ -44,7 +44,7 @@ router.get('/list-provinces', function(req, res) {
   var provinces = [];
   keys.filter(key => !isNaN(Number(key))).map(key => provinces.push({ name : key, id : EskomLoadSheddingAPI.Province[key] }));
 
-  res.status(200).send(provinces);
+  res.status(200).json(provinces);
 });
 
 router.post('/eskom/load-shedding-status?town=xxx', function(req, res, next) {
