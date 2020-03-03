@@ -5,7 +5,7 @@ services:
   axs:
     build: "."
     # image: node:12.3-alpine
-    # command: sh -c "npm install && npm start"
+    # command: sh -c "ls -hal /home/node/app/node_modules && npm start"
     environment:
       - NODE_ENV=development
       - PORT=8003
@@ -13,7 +13,7 @@ services:
       - "8003:8003"
     working_dir: /home/node/app
     volumes:
-      - ./:/home/node/app:cached
+      - ./:/home/node/app
       # Need to read https://stackoverflow.com/questions/51097652/install-node-modules-inside-docker-container-and-synchronize-them-with-host
       - /home/node/app/node_modules
     

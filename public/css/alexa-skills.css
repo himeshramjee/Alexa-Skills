@@ -1,0 +1,14 @@
+.content {
+    margin-left: 10%;
+    width: 80%;
+    border-style: dotted;
+}
+
+.nav-link {
+    border-right: groove;
+}
+
+.notification-icon-small {
+    width: 5px;
+    height: 5px;
+}

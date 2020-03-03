@@ -14,13 +14,15 @@
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.4",
     "dateformat": "^3.0.3",
-    "pug": "^2.0.4"
+    "pug": "^2.0.4",
+    "eskom-loadshedding-api": "^0.1.4",
+    "bootstrap-icons": "^1.0.0-alpha2"
   },
   "devDependencies": {
     "debug": "^2.6.9"
   },
   "nodemonConfig": {
     "ext": "js, json, pug",
-    "delay": "2500"
+    "delay": "1500"
   }
 }

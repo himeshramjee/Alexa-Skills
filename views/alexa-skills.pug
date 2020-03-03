@@ -1,0 +1,41 @@
+doctype html
+head
+  meta(charset='utf-8')
+  title Explore: Alexa Skills
+  link(rel="shortcut icon" type="image/x-icon" href="./alexa/favicon.ico")
+  // Bootstrap CSS
+  link(rel="stylesheet", href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css", integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh", crossorigin="anonymous")
+  // App css
+  link(rel='stylesheet' href='./alexa/css/alexa-skills.css')
+nav.navbar.navbar-dark.bg-dark
+  a.navbar-brand(href='#') .h | Alexa Skills - Eskom Load Shedding Schedules
+.content
+  nav.navbar.navbar-expand-lg.navbar-light.bg-light
+    navbarNav.collapse.navbar-collapse
+      ul.navbar-nav
+        li.nav-item
+          a.nav-link Home
+        li.nav-item.dropdown
+          a(href='#' class="nav-link dropdown-toggle" data-toggle="dropdown") Select municipality
+          .dropdown-menu
+            a(href='#' class="dropdown-item" id="municipalityID-10243") Cape Town
+            a(href='#' class="dropdown-item") Durban
+            a(href='#' class="dropdown-item") Hout Bay
+            a(href='#' class="dropdown-item") Johannesburg
+            a(href='#' class="dropdown-item") Pretoria
+        li.nav-item
+          a(class="nav-link" href="#" target="_blank") Get Alexa Skill
+        li.divider(role='separator')
+        li.nav-item
+          a(id="eskomStatus" class="nav-link") Current status: 
+            span.glyphicon.glyphicon-refresh.notification-icon-small(id="eskomStatusIcon")
+  .row
+    .col-md
+      p. 
+        Contents
+
+// jQuery first, then Popper.js, then Bootstrap JS
+script(src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous")
+script(src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous")
+script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous")
+script(type='text/javascript' src='./alexa/js/alexa-skills.js')
