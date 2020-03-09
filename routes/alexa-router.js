@@ -1,57 +1,66 @@
 const EskomLoadSheddingAPI = require('eskom-loadshedding-api');
-const StatusAPI = EskomLoadSheddingAPI.Status;
 const StageAPI = EskomLoadSheddingAPI.LoadsheddingStage;
-const SearchAPI = EskomLoadSheddingAPI.Search;
+const EskomService = require('../services/eskom-service')
 
-var express = require('express');
-var router = express.Router();
+let express = require('express');
+let router = express.Router();
 
-// TODO: If these route handlers become complex then these could (should even) be abstrated behind controller and service classes.
+// ***********************************************************************************************
+// FIXME: Decouple into models, controller and service classes
 router.get('/', function(req, res) {
-  res.render('alexa-skills');
+  try {
+    res.render('alexa-skills', { provinces: getProvinces() });
+  } catch (err) {
+    // TODO: Anchoring until I think through this
+  } finally {
+    // TODO: Anchoring until I think through this
+  }
 });
 
 router.get('/get-eskom-status', function(req, res) {
-  var result = {};
+  let result = {};
 
-  StatusAPI.getStatus()
-    .then(loadSheddingStatus => {
-      result.status = loadSheddingStatus;
-      if (loadSheddingStatus != StageAPI.UNKNOWN && loadSheddingStatus != StageAPI.NOT_LOADSHEDDING) {
-        result.message = "Up to stage " + result;
-      } else {
-        if (loadSheddingStatus === StageAPI.NOT_LOADSHEDDING) {
-          result.message = "Eskom is currently not load shedding.";
-        } else {
-          result.message = "Woops! Seems there isn't any load shedding information available. [Response: " + loadSheddingStatus + "]";
-        }
-      }
+  let loadSheddingStatus;
 
-      res.status(200).json(result);
-    });
+  let response = EskomService.getStatus();
+  console.log("Result: " + response);
+  loadSheddingStatus = response;
+
+  console.log("loadSheddingStatus: " + loadSheddingStatus);
+  result.status = loadSheddingStatus;
+  if (loadSheddingStatus != StageAPI.UNKNOWN && loadSheddingStatus != StageAPI.NOT_LOADSHEDDING) {
+    result.message = "Up to stage " + result.status;
+  } else {
+    if (loadSheddingStatus === StageAPI.NOT_LOADSHEDDING) {
+      result.message = "Eskom is currently not load shedding.";
+    } else {
+      result.message = "Woops! Seems there isn't any load shedding information available. [Response: " + loadSheddingStatus + "]";
+    }
+  }
+
+  console.log("Status: " + result.status + " -> " + result.message);
+  res.status(200).json(result);
+});
+
+router.get('/list-municipalities/:provinceCode?', function(req, res) {
+  let queryStringObject = req.query;
+  console.log("Query string echo: " + queryStringObject);
+  let provinceCode = EskomLoadSheddingAPI.Province.WESTERN_CAPE; // default is home/WC. Look into detecting this with some user location API
+  if (req.params.provinceCode) {
+    console.log("URL Path param province: " + req.params.provinceCode);
+    provinceCode = req.params.provinceCode;
+  }
+
+  res.send("FIXME: Do service call");
+  // res.status(200).json(EskomService.getMunicipalitiesForProvince(provinceCode));
 });
 
 router.get('/list-wc-municipalities', function(req, res) {
-  SearchAPI.getMunicipalities(EskomLoadSheddingAPI.Province.WESTERN_CAPE)
-    .then(municipalities => {
-      res.status(200).json(municipalities);
-    });
+  res.status(200).json(EskomService.getMunicipalitiesForProvince(EskomLoadSheddingAPI.Province.WESTERN_CAPE));
 });
 
 router.get('/list-provinces', function(req, res) {
-  var keys = Object.keys(EskomLoadSheddingAPI.Province);
-  
-  var provinces = [];
-  keys.filter(key => !isNaN(Number(key))).map(key => provinces.push({ name : key, id : EskomLoadSheddingAPI.Province[key] }));
-
-  res.status(200).json(provinces);
-});
-
-router.post('/eskom/load-shedding-status?town=xxx', function(req, res, next) {
-  console.log(req.body);
-  console.log("TODO: Make API call");
-  
-  res.status(200); // .json({ responseJson });
+  res.status(200).json(EskomService.getProvinces());
 });
 
 module.exports = router;

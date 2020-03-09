@@ -13,7 +13,9 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 var alexaRouter = require('./routes/alexa-router');
+var alexaPingRouter = require('./routes/alexa-ping-router');
 app.use('/alexa', alexaRouter);
+app.use('/alexa', alexaPingRouter);
 app.use('/alexa', express.static(path.join(__dirname, 'public')));
 
 app.on('listening', () => {

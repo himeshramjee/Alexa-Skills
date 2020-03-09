@@ -1,5 +1,7 @@
 const getEskomStatus = (e) => {
-    e.preventDefault();
+    if (e) {
+        e.preventDefault();
+    }
     
     const options = {
       method: 'GET',
@@ -32,4 +34,7 @@ const getEskomStatus = (e) => {
   
   var el = document.getElementById('eskomStatus');
   el.onclick = getEskomStatus;
+  $(document).ready(function(){
+    getEskomStatus();
+});
   

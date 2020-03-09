@@ -16,6 +16,11 @@ nav.navbar.navbar-dark.bg-dark
         li.nav-item
           a.nav-link Home
         li.nav-item.dropdown
+          a(href='#' class="nav-link dropdown-toggle" data-toggle="dropdown") Select a Province
+          .dropdown-menu
+            each p in provinces
+              a(href='#' class="dropdown-item" id="provinceOption-" + p.id) #{p.name}
+        li.nav-item.dropdown
           a(href='#' class="nav-link dropdown-toggle" data-toggle="dropdown") Select municipality
           .dropdown-menu
             a(href='#' class="dropdown-item" id="municipalityID-10243") Cape Town
