@@ -1,6 +1,6 @@
 const EskomLoadSheddingAPI = require('eskom-loadshedding-api');
 const StageAPI = EskomLoadSheddingAPI.LoadsheddingStage;
-const EskomService = require('../services/eskom-service')
+const EskomCache = require('../services/caches/eskom-redis-cache');
 
 let express = require('express');
 let router = express.Router();
@@ -22,20 +22,21 @@ router.get('/get-eskom-status', function(req, res) {
 
   let loadSheddingStatus;
 
-  let response = EskomService.getStatus();
-  console.log("Result: " + response);
+  let response = EskomCache.getEskomStatus();
   loadSheddingStatus = response;
-
   console.log("loadSheddingStatus: " + loadSheddingStatus);
+
   result.status = loadSheddingStatus;
-  if (loadSheddingStatus != StageAPI.UNKNOWN && loadSheddingStatus != StageAPI.NOT_LOADSHEDDING) {
+  if (loadSheddingStatus === StageAPI.UNKNOWN) { // = -1
+    result.message = "Refreshing Cache";
+  }
+  if (loadSheddingStatus === StageAPI.NOT_LOADSHEDDING) {  // = 0
+    result.message = "Eskom is currently not load shedding.";
+  }
+  if (loadSheddingStatus >= StageAPI.STAGE_1) { // >= 1
     result.message = "Up to stage " + result.status;
   } else {
-    if (loadSheddingStatus === StageAPI.NOT_LOADSHEDDING) {
-      result.message = "Eskom is currently not load shedding.";
-    } else {
-      result.message = "Woops! Seems there isn't any load shedding information available. [Response: " + loadSheddingStatus + "]";
-    }
+    result.message = "Woops! Seems there isn't any load shedding information available. [Response: " + loadSheddingStatus + "]";
   }
 
   console.log("Status: " + result.status + " -> " + result.message);

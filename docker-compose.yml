@@ -1,7 +1,21 @@
 version: "3"
 
-services:
+networks:
+  alnet:
 
+services:
+  redis:
+    image: redis
+    ports:
+      - 6379
+    expose:
+      # Exposed internally to linked services and not published to host
+      - 6379
+    volumes:
+      - /cache-data
+    entrypoint: redis-server --appendonly yes
+    networks: 
+      - alnet
   axs:
     build: "."
     # image: node:12.3-alpine
@@ -9,11 +23,15 @@ services:
     environment:
       - NODE_ENV=development
       - PORT=8003
+      - REDIS_URL=redis://cache
     ports:
       - "8003:8003"
+    depends_on:
+      - redis
     working_dir: /home/node/app
     volumes:
       - ./:/home/node/app
       # Need to read https://stackoverflow.com/questions/51097652/install-node-modules-inside-docker-container-and-synchronize-them-with-host
       - /home/node/app/node_modules
-    
+    networks: 
+      - alnet

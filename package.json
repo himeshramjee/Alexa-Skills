@@ -16,7 +16,8 @@
     "dateformat": "^3.0.3",
     "pug": "^2.0.4",
     "eskom-loadshedding-api": "^0.1.4",
-    "bootstrap-icons": "^1.0.0-alpha2"
+    "bootstrap-icons": "^1.0.0-alpha2",
+    "redis": "^3.0.2"
   },
   "devDependencies": {
     "debug": "^2.6.9"

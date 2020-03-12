@@ -2,7 +2,12 @@ exports.doPromise = function (inputString) {
     let reversedString = "Doing a solid something...";
 
     (() => new Promise((resolve, reject) => {
-        reversedString = inputString.split('').reverse().join('') + "!";
+        if (!inputString) {
+            reversedString = "Pong";
+        } else {
+            reversedString = inputString.split('').reverse().join('') + "!";
+        }
+
         return resolve(reversedString);
     }))();
 

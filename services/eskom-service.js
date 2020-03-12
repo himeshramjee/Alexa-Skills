@@ -1,6 +1,7 @@
 const EskomLoadSheddingAPI = require('eskom-loadshedding-api');
 const StatusAPI = EskomLoadSheddingAPI.Status;
 const SearchAPI = EskomLoadSheddingAPI.Search;
+const RedisCache = require('./caches/eskom-redis-cache');
 
 exports.getStatus = function () {
     let loadSheddingStatus = -1;
@@ -28,7 +29,10 @@ exports.getStatus = function () {
     StatusAPI.getStatus()
         .then(result => {
             loadSheddingStatus = result;
-            return loadSheddingStatus;
+            // FIXME: Cache keys should be abstracted and mastered in central model (even just an enum)
+            console.log("Setting eskom.status in cache with value '" + result + "'")
+            RedisCache.updateCacheItem("eskom.status", result);
+            return result;
         });
 };
 
