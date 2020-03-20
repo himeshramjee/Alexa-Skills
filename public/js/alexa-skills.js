@@ -1,4 +1,4 @@
-const getEskomStatus = (e) => {
+const refreshEskomStatusHandler = (e) => {
     if (e) {
         e.preventDefault();
     }
@@ -13,7 +13,7 @@ function getEskomStatus() {
         headers: new Headers({ "Accept": "application/json", 'Content-Type': 'application/json' })
       }
     
-      const eskomStatusIcon = document.getElementById('eskomStatusIcon');
+    const eskomStatusIcon = document.getElementById('eskomStatusIcon');
     
     fetch('/alexa/get-eskom-status', options)
     .then(response => { return response.json(); } )
@@ -21,7 +21,7 @@ function getEskomStatus() {
         console.log(result);
         
         if (result.status == -1) {
-            setTimeout(getEskomStatus(), 1000);
+            setTimeout(getEskomStatus(), 3000);
         }
 
         if (result.status > 1) {
@@ -39,9 +39,9 @@ function getEskomStatus() {
     })
 }
 
-  var el = document.getElementById('eskomStatus');
-  el.onclick = getEskomStatus;
-  $(document).ready(function(){
+var el = document.getElementById('eskomStatus');
+el.onclick = refreshEskomStatusHandler;
+$(document).ready(function(){
     getEskomStatus();
 });
   

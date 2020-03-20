@@ -38,23 +38,30 @@ setTimeout( function () {
 
 exports.getEskomStatus = function () {
     // FIXME: Cache keys should be abstracted and mastered in central model. The magical string is also referenced in the eskom-service.js file.
+    console.log("2-Cache: Getting cached status...");
     const cachedStatus = getCacheItem("eskom.status");
-    console.log("Cached status is: " + cachedStatus);
+    console.log("\t 2-Cache: Cached status is: " + cachedStatus);
+
     if (!cachedStatus) {
       // No cached status, refresh the cache
-      console.log("No cached status. Refreshing cache...");
-      EskomService.getStatus();
+      console.log("\t 2-Cache: No cached status. Refreshing cache...");
+      let temp = EskomService.getStatus();
+      console.log("\t 2-Cache: Returning immediate value: " + temp);
+      return temp;
     } else {
+      console.log("\t 2-Cache: Returning cached status: " + cachedStatus);
       return cachedStatus;
     }
 }
 
 exports.updateCacheItem = function(key, value) {
-    client.set(key, value, function (err, status) {
-        if (err) throw err;
+  console.log("4-Cache: Updating cached status with new value...");
+  client.set(key, value, function (err, status) {
+      if (err) throw err;
 
-        console.log("Cache updated. Key=" + key + ", Value= " + value + ".");
-      });
+      console.log("\t 4-Cache: Cache updated. Key=" + key + ", Value= " + value + ".");
+    });
+  console.log("\t 4-Cache: Returning no value.");
 }
 
 getCacheItem = function (key) {
@@ -70,7 +77,7 @@ getCacheItem = function (key) {
     client.get(key, function (err, value) {
         if (err) throw err;
 
-        console.log("Cache item retrieved. Key=" + key + ", Value= " + value + ".");
+        console.log("\t (Cache Internal call) Cache item retrieved. Key=" + key + ", Value= " + value + ".");
         return value;
       });
 }

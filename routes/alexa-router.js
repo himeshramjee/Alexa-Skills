@@ -18,28 +18,25 @@ router.get('/', function(req, res) {
 });
 
 router.get('/get-eskom-status', function(req, res) {
+  console.log("1-Router: Refreshing eskom status...");
+
   let result = {};
+  let loadSheddingStatus = EskomCache.getEskomStatus();
 
-  let loadSheddingStatus;
-
-  let response = EskomCache.getEskomStatus();
-  loadSheddingStatus = response;
-  console.log("loadSheddingStatus: " + loadSheddingStatus);
+  console.log("\t 1-Router: Status returned is: " + loadSheddingStatus);
 
   result.status = loadSheddingStatus;
-  if (loadSheddingStatus === StageAPI.UNKNOWN) { // = -1
-    result.message = "Refreshing Cache";
-  }
-  if (loadSheddingStatus === StageAPI.NOT_LOADSHEDDING) {  // = 0
+  if (loadSheddingStatus === StageAPI.UNKNOWN) { // status = -1
+    result.message = "Service returned a status as unknown.";
+  } else if (loadSheddingStatus === StageAPI.NOT_LOADSHEDDING) {  // status = 0
     result.message = "Eskom is currently not load shedding.";
-  }
-  if (loadSheddingStatus >= StageAPI.STAGE_1) { // >= 1
+  } else if (loadSheddingStatus >= StageAPI.STAGE_1) { // status >= 1
     result.message = "Up to stage " + result.status;
   } else {
-    result.message = "Woops! Seems there isn't any load shedding information available. [Response: " + loadSheddingStatus + "]";
+    result.message = "Woops! Seems there isn't any load shedding information available.";
   }
 
-  console.log("Status: " + result.status + " -> " + result.message);
+  console.log("\t 1-Router: Result returned: " + result.status + " -> " + result.message);
   res.status(200).json(result);
 });
 
